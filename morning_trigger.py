@@ -93,7 +93,8 @@ async def trigger():
             timeout=30
         )
         print(f"[{now}] 注入完成：sleepiness={sleepiness} libido={libido}")
-        print(resp.json())
-
+        print(resp.status_code)
+        print(resp.text)
+        
 if __name__ == "__main__":
     asyncio.run(trigger())
