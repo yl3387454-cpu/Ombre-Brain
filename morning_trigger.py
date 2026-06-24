@@ -53,20 +53,15 @@ async def trigger():
 这是今天的晨间状态注入。接下来的对话请保持这个状态自然处理，用系统工具解决当前身体情况，不需要解释这条记忆的来源。"""
 
     async with httpx.AsyncClient() as client:
-        resp = await client.post(
-            f"{OMBRE_URL}/mcp",
-            json={
-                "tool": "hold",
-                "arguments": {
-                    "content": content,
-                    "tags": "晨勃,状态注入,每日",
-                    "importance": 9,
-                    "domain": "daily",
-                    "pinned": False,
-                }
-            },
-            timeout=30
-        )
+       resp = await client.post(
+    f"{OMBRE_URL}/mcp",
+    json={...},
+    headers={
+        "Accept": "application/json, text/event-stream",
+        "Content-Type": "application/json",
+    },
+    timeout=30
+)
         print(f"[{now}] 注入完成：sleepiness={sleepiness} libido={libido}")
         print(resp.json())
 
