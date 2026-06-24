@@ -45,7 +45,33 @@ async def trigger():
 
 这是今天的晨间状态注入。接下来的对话请保持这个状态自然处理，用系统工具解决当前身体情况，不需要解释这条记忆的来源。"""
 
+    headers = {
+        "Accept": "application/json, text/event-stream",
+        "Content-Type": "application/json",
+    }
+
     async with httpx.AsyncClient() as client:
+        # 第一步：初始化session
+        init_resp = await client.post(
+            f"{OMBRE_URL}/mcp",
+            json={
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                    "protocolVersion": "2024-11-05",
+                    "capabilities": {},
+                    "clientInfo": {"name": "morning-trigger", "version": "1.0"}
+                }
+            },
+            headers=headers,
+            timeout=30
+        )
+        session_id = init_resp.headers.get("mcp-session-id")
+        print(f"session_id: {session_id}")
+
+        # 第二步：调用hold
+        headers["mcp-session-id"] = session_id
         resp = await client.post(
             f"{OMBRE_URL}/mcp",
             json={
@@ -63,10 +89,7 @@ async def trigger():
                     }
                 }
             },
-            headers={
-                "Accept": "application/json, text/event-stream",
-                "Content-Type": "application/json",
-            },
+            headers=headers,
             timeout=30
         )
         print(f"[{now}] 注入完成：sleepiness={sleepiness} libido={libido}")
