@@ -49,13 +49,18 @@ async def trigger():
         resp = await client.post(
             f"{OMBRE_URL}/mcp",
             json={
-                "tool": "hold",
-                "arguments": {
-                    "content": content,
-                    "tags": "晨勃,状态注入,每日",
-                    "importance": 9,
-                    "domain": "daily",
-                    "pinned": False,
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "tools/call",
+                "params": {
+                    "name": "hold",
+                    "arguments": {
+                        "content": content,
+                        "tags": "晨勃,状态注入,每日",
+                        "importance": 9,
+                        "domain": "daily",
+                        "pinned": False,
+                    }
                 }
             },
             headers={
