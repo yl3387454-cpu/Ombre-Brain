@@ -1,8 +1,5 @@
 {
-  "cron": [
-    {
-      "command": "python morning_trigger.py",
-      "schedule": "0 22,23,0,1 * * *"
+    
     }
   ]
 }
